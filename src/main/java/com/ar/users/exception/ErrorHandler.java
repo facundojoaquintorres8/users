@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,65 +20,76 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.ar.users.dto.ErrorDTO;
+import com.ar.users.dto.ErrorResponseDTO;
 
 @ControllerAdvice
 public class ErrorHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorDTO> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponseDTO> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
 
         StringBuilder errorMessage = new StringBuilder();
         fieldErrors.forEach(f -> errorMessage.append(f.getDefaultMessage() + ". "));
 
-        ErrorDTO response = new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), errorMessage.toString());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        errorsList.add(new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), errorMessage.toString()));
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(errorsList);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDTO> exception(HttpServletRequest request, Exception e) {
+    public ResponseEntity<ErrorResponseDTO> exception(HttpServletRequest request, Exception e) {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
 
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append("Message: ").append(e.getMessage()).append(" StackTrace: ").append(errors.toString());
 
-        ErrorDTO response = new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage.toString());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        errorsList.add(new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage.toString()));
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(errorsList);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorDTO> constraintViolationException(HttpServletRequest request, ConstraintViolationException e) {
+    public ResponseEntity<ErrorResponseDTO> constraintViolationException(HttpServletRequest request, ConstraintViolationException e) {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
 
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append("Message: ").append(e.getMessage()).append(" StackTrace: ").append(errors.toString());
 
-        ErrorDTO response = new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), errorMessage.toString());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        errorsList.add(new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), errorMessage.toString()));
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(errorsList);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorDTO> dataIntegrityViolationException(HttpServletRequest request, DataIntegrityViolationException e) {
+    public ResponseEntity<ErrorResponseDTO> dataIntegrityViolationException(HttpServletRequest request, DataIntegrityViolationException e) {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
 
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append("Message: ").append(e.getMessage()).append(" StackTrace: ").append(errors.toString());
 
-        ErrorDTO response = new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), errorMessage.toString());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        errorsList.add(new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), errorMessage.toString()));
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(errorsList);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorDTO> customException(HttpServletRequest request, CustomException e) {
+    public ResponseEntity<ErrorResponseDTO> customException(HttpServletRequest request, CustomException e) {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
 
-        ErrorDTO response = new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        List<ErrorDTO> errorsList = new ArrayList<>();
+        errorsList.add(new ErrorDTO(Timestamp.from(Instant.now()), HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(errorsList);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -16,7 +16,7 @@ public class UserDTO {
     private Boolean isActive;
     private String name;
     private String email;
-    private String password;
+    private byte[] password;
     private List<PhoneDTO> phones;
 
 }
