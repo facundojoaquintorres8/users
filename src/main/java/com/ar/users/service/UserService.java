@@ -100,7 +100,7 @@ public class UserService implements IUserService {
     }
 
     private void validateEmail(String email) throws Exception {
-        if (email == null || email.trim().equals("")) {
+        if (email == null || email.isBlank()) {
             throw new CustomException("Email not entered");
         } else {
             Boolean isValid = email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[a-zA-Z]{2,4}$");
@@ -111,7 +111,7 @@ public class UserService implements IUserService {
     }
 
     private void validatePassword(String password) throws Exception {
-        if (password == null || password.trim().equals("")) {
+        if (password == null || password.isBlank()) {
             throw new CustomException("Password not entered");
         } else {
             Boolean hasOneCapitalLetter = password.matches("^[a-z0-9]*[A-Z]{1}[a-z0-9]*$");
