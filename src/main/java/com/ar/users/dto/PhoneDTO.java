@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class PhoneDTO {
     
-    private Long number;
+    private Integer number;
     private Integer cityCode;
     private String countryCode;
 

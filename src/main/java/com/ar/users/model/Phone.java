@@ -17,7 +17,7 @@ public class Phone {
     @Id
     private UUID id;
 
-    private Long number;
+    private Integer number;
 
     private Integer cityCode;
 

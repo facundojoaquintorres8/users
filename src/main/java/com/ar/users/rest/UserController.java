@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ar.users.dto.SignUpRequestDTO;
+import com.ar.users.dto.SignUpResponseDTO;
+import com.ar.users.dto.UserDTO;
 import com.ar.users.service.IUserService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,12 +26,12 @@ public class UserController {
     private IUserService service;
     
     @PostMapping("/sign-up")
-    public ResponseEntity<Object> signUp(@RequestBody SignUpRequestDTO request) throws Exception {
+    public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO request) throws Exception {
         return new ResponseEntity<>(service.signUp(request), HttpStatus.OK);
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Object> login(@RequestHeader(name = "token") String token) throws Exception {
+    public ResponseEntity<UserDTO> login(@RequestHeader(name = "token") String token) throws Exception {
         return new ResponseEntity<>(service.login(token), HttpStatus.OK);
     }
 
